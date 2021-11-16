@@ -2,14 +2,19 @@ import node
 import random
 import time
 import binarySearchTree
+import AVLtree
+import RBtree
 
 # 기본 설정값 ( 필요시 수정 가능 )
 MAX_NUMBER = 100_000_000
 EPOCH = 100
 DATA_SIZE = [1_000, 5_000, 10_000, 50_000, 100_000]
+DATA = []
 
 # 각 트리들
 BS = binarySearchTree.binarySearchTree()
+AVL = AVLtree.AVL()
+RB = RBtree.RedBlackTree()
 
 # 삽입에 소요된 시간
 USED_TIME_INSERT = {
@@ -29,6 +34,7 @@ USED_TIME_SEARCH = {
 
 print("program start")
 
+print("start inserting data")
 # 각 트리에 삽입
 for e in range(EPOCH):
     DATA = [random.sample(range(0, MAX_NUMBER), i) for i in DATA_SIZE]
@@ -48,7 +54,8 @@ for e in range(EPOCH):
     for i in DATA:
         start = time.time()
         for data in i:
-            pass
+            temp = node.Node(data)
+            AVL.insert(temp)
         USED_TIME_INSERT["AVL"][index] += time.time() - start
         index += 1
 
@@ -57,7 +64,8 @@ for e in range(EPOCH):
     for i in DATA:
         start = time.time()
         for data in i:
-            pass
+            temp = node.Node(data)
+            RB.insert(temp)
         USED_TIME_INSERT["RB"][index] += time.time() - start
         index += 1
 
@@ -69,11 +77,7 @@ for e in range(EPOCH):
             pass
         USED_TIME_INSERT["T"][index] += time.time() - start
         index += 1
-    print(e, flush=True)
-
-
-
+    print(f"====== {e+1}% complete ======")
 
 print("삽입에 걸린 시간")
-for k, v in USED_TIME_INSERT:
-    pass
+print(USED_TIME_INSERT)

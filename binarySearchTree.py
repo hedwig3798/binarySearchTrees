@@ -3,27 +3,24 @@ class binarySearchTree:
     def __init__(self, data=None):
         self.root = data
 
-    def insert(self, data):
+    # 삽입 연산 ( 재귀호출 사용 )
+    def insert(self, data, currentNode=None):
 
         if self.root is None:
             self.root = data
             return
 
-        now = self.root
+        if currentNode is None:
+            currentNode = self.root
 
-        while True:
-            if now.key <= data.key:
-                if now.right is None:
-                    now.right = data
-                    data.parent = now
-                    return
-                else:
-                    now = now.right
-
+        if data.key <= currentNode.key:
+            if currentNode.left:
+                self.insert(currentNode.left, data)
             else:
-                if now.left is None:
-                    now.left = data
-                    data.parent = now
-                    return
-                else:
-                    now = now.left
+                currentNode.left = data
+
+        elif data.key > currentNode.key:
+            if currentNode.right:
+                self.insert(currentNode.right, data)
+            else:
+                currentNode.right = data
