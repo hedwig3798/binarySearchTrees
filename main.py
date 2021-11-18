@@ -8,7 +8,7 @@ import treaps
 
 # 기본 설정값 ( 필요시 수정 가능 )
 MAX_NUMBER = 100_000_000
-EPOCH = 100
+EPOCH = 10
 DATA_SIZE = [1_000, 5_000, 10_000, 50_000, 100_000]
 DATA = []
 
@@ -42,6 +42,7 @@ for e in range(EPOCH):
     DATA = [random.sample(range(0, MAX_NUMBER), i) for i in DATA_SIZE]
 
     # BS에 삽입
+    print("BS")
     index = 0
     for i in DATA:
         start = time.time()
@@ -55,41 +56,19 @@ for e in range(EPOCH):
             BS.root = None
 
     # AVL에 삽입
+    print("AVL")
     index = 0
     for i in DATA:
         start = time.time()
         for data in i:
             temp = node.Node(data)
             AVL.insert(temp)
-            print(e)
         USED_TIME_INSERT["AVL"][index] += time.time() - start
         index += 1
         if i != DATA[-1]:
             AVL.root = None
 
-    # RB에 삽입
-    index = 0
-    for i in DATA:
-        start = time.time()
-        for data in i:
-            temp = node.Node(data)
-            RB.insert(temp)
-        USED_TIME_INSERT["RB"][index] += time.time() - start
-        index += 1
-        if i != DATA[-1]:
-            RB.root = None
 
-    # T에 삽입
-    index = 0
-    for i in DATA:
-        start = time.time()
-        for data in i:
-            temp = node.Node(data)
-            T.insert(temp)
-        USED_TIME_INSERT["T"][index] += time.time() - start
-        index += 1
-        if i != DATA[-1]:
-            T.root = None
 
     print(f"====== INSERT {e+1}% COMPLETE ======", flush=True)
 

@@ -53,7 +53,7 @@ class RedBlackTree:
                         self.R_R(gp)
                     elif p == gp.left and p.right == node:  # LR Case
                         self.R_L(p)
-                        gp.color, node.color = node.color, G.color
+                        gp.color, node.color = node.color, gp.color
                         self.R_R(gp)
                     elif p == gp.right and p.right == node:  # RR Case
                         gp.color, p.color = p.color, gp.color

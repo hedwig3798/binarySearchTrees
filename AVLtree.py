@@ -10,30 +10,30 @@ class AVL:
             return data.height
 
     # 삽입
-    def insert(self, data, currentNode=None):
 
-        if self.root is None:
-            self.root = data
-            self.root.height = 0
-            return
+    def insert(self, data):
+        self.root = self.insert_process(data, self.root)
+
+    def insert_process(self, data, currentNode=None):
 
         if currentNode is None:
-            currentNode = self.root
+            data.height = 1
+            return data
 
         if data.key <= currentNode.key:
             if currentNode.left:
-                self.insert(data, currentNode.left)
+                self.insert_process(data, currentNode.left)
             else:
                 currentNode.left = data
 
         elif data.key > currentNode.key:
             if currentNode.right:
-                self.insert(data, currentNode.right)
+                self.insert_process(data, currentNode.right)
             else:
                 currentNode.right = data
 
         currentNode.height = max(self.height(currentNode.left), self.height(currentNode.right)) + 1
-        self.balance(currentNode)
+        return self.balance(currentNode)
 
     # 양쪽 밸런스 수치 가져옴
     def BF(self, node):
@@ -44,12 +44,12 @@ class AVL:
         if self.BF(node) > 1:
             if self.BF(node.left) < 0:
                 node.left = self.R_L(node.left)
-            node.left = self.R_R(node.left)
+            node = self.R_R(node)
 
         elif self.BF(node) < -1:
-            if self.BF(node.left) < 0:
-                node.right = self.R_L(node.right)
-            node.right = self.R_R(node.right)
+            if self.BF(node.right) > 0:
+                node.right = self.R_R(node.right)
+            node = self.R_L(node)
 
         return node
 
@@ -68,7 +68,7 @@ class AVL:
     def R_L(self, node):
         temp = node.right
 
-        node.left = temp.left
+        node.right = temp.left
         temp.left = node
 
         node.height = max(self.height(node.right), self.height(node.left)) + 1

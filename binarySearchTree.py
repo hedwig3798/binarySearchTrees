@@ -4,6 +4,7 @@ class binarySearchTree:
         self.root = data
 
     # 삽입 연산 ( 재귀호출 사용 )
+
     def insert(self, data, currentNode=None):
 
         if self.root is None:
@@ -24,3 +25,4 @@ class binarySearchTree:
                 self.insert(data, currentNode.right)
             else:
                 currentNode.right = data
+        return currentNode
