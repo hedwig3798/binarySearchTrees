@@ -24,16 +24,15 @@ class Node:
 
         while root.key != val:
             if root.key < val:
-                if root.left is None:
-                    print("cannot find")
-                    return
-                root = root.left
-            elif root.key > val:
                 if root.right is None:
                     print("cannot find")
                     return
                 root = root.right
-
+            elif root.key > val:
+                if root.left is None:
+                    print("cannot find")
+                    return
+                root = root.left
         return
 
 

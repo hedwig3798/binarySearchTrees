@@ -15,12 +15,12 @@ class binarySearchTree:
 
         if data.key <= currentNode.key:
             if currentNode.left:
-                self.insert(currentNode.left, data)
+                self.insert(data, currentNode.left)
             else:
                 currentNode.left = data
 
         elif data.key > currentNode.key:
             if currentNode.right:
-                self.insert(currentNode.right, data)
+                self.insert(data, currentNode.right)
             else:
                 currentNode.right = data
