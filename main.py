@@ -7,10 +7,10 @@ import RBtree
 import treaps
 
 # 기본 설정값 ( 필요시 수정 가능 )
-MAX_NUMBER = 100_000_000
-EPOCH = 10
-DATA_SIZE = [1_000, 5_000, 10_000, 50_000, 100_000]
-DATA = []
+MAX_NUMBER = 100_000_000    # 최댓값
+EPOCH = 1   # 반복 횟수
+DATA_SIZE = [1_000, 5_000, 10_000, 50_000, 100_000]     # 데이터 크기
+DATA = []   # 데이터가 들어갈 리스트
 
 # 각 트리들
 BS = binarySearchTree.binarySearchTree()
@@ -64,6 +64,18 @@ for e in range(EPOCH):
             temp = node.Node(data)
             AVL.insert(temp)
         USED_TIME_INSERT["AVL"][index] += time.time() - start
+        index += 1
+        if i != DATA[-1]:
+            AVL.root = None
+            
+    # AVL에 삽입
+    print("RB")
+    index = 0
+    for i in DATA:
+        start = time.time()
+        for data in i:
+            RB.insert(data)
+        USED_TIME_INSERT["RB"][index] += time.time() - start
         index += 1
         if i != DATA[-1]:
             AVL.root = None

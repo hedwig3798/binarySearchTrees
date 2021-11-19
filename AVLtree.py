@@ -22,13 +22,13 @@ class AVL:
 
         if data.key <= currentNode.key:
             if currentNode.left:
-                self.insert_process(data, currentNode.left)
+                currentNode.left = self.insert_process(data, currentNode.left)
             else:
                 currentNode.left = data
 
         elif data.key > currentNode.key:
             if currentNode.right:
-                self.insert_process(data, currentNode.right)
+                currentNode.right = self.insert_process(data, currentNode.right)
             else:
                 currentNode.right = data
 

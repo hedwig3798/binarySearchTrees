@@ -1,105 +1,98 @@
+import node as n
+
+
 class RedBlackTree:
     def __init__(self, data=None):
         self.root = data
-        self.leaf = None
+        self. insertedNode = None
 
-    def insert(self, data, currentNode=None):
+    def insert(self, data):
+        self.root = self._insert_node(self.root, data, None)
+        self._balancing(self.inserted_node)
+        return
 
-        if self.root is None:
-            self.root = data
-            self.root.color = "B"
-
-        if currentNode is None:
-            currentNode = self.root
-
-        if data.key <= currentNode.key:
-            if currentNode.left:
-                self.insert(data, currentNode.left)
-            else:
-                data.parent = currentNode
-                currentNode.left = data
-
-        elif data.key > currentNode.key:
-            if currentNode.right:
-                self.insert(data, currentNode.right)
-            else:
-                data.parent = currentNode
-                currentNode.right = data
-
-        self.balance(currentNode)
-
-    def balance(self, node):
-        p = node.parent
-
-        if p is None:
-            node.color = "B"
+    def _insert_node(self, cur, data, parent):
+        if cur is None:
+            cur = n.Node(data)
+            cur.parent = parent
+            self.inserted_node = cur
         else:
-            if p.color == "R":
-                gp = p.parent
-                u = None
+            if data < cur.key:
+                cur.left = self._insert_node(cur.left, data, cur)
+            elif data > cur.key:
+                cur.right = self._insert_node(cur.right, data, cur)
+        return cur
 
-                if gp.right == p:
-                    u = gp.left
-                elif gp.left == p:
-                    u = gp.right
+    def _balancing(self, node):
+        P = node.parent
+        if P is None:  # if node is root node
+            node.color = "Black"
+        else:  # if node isn't root node
+            if P.color == "Red":  # if parent node is red
+                G = P.parent  # must exist grandparent
+                U = None
+                if G.left == P:
+                    U = G.right
+                elif G.right == P:
+                    U = G.left
 
-                if u is not None and u.color == "R":
-                    p.color, u.color = "B", "B"
-                    gp.color = "R"
-                    self.balance(gp)
-                else:
-                    if p == gp.left and p.left == node:  # LL Case
-                        gp.color, p.color = p.color, gp.color
-                        self.R_R(gp)
-                    elif p == gp.left and p.right == node:  # LR Case
-                        self.R_L(p)
-                        gp.color, node.color = node.color, gp.color
-                        self.R_R(gp)
-                    elif p == gp.right and p.right == node:  # RR Case
-                        gp.color, p.color = p.color, gp.color
-                        self.R_L(gp)
-                    elif p == gp.right and p.left == node:  # RL Case
-                        self.R_R(p)
-                        gp.color, node.color = node.color, gp.color
-                        self.R_L(gp)
+                if U is not None and U.color == "Red":
+                    # parent, uncle -> Black, grandparent -> Red
+                    P.color, U.color = "Black", "Black"
+                    G.color = "Red"
+                    # rebalncing from grandparent
+                    self._balancing(G)
+                else:  # uncle is None or uncle.color is black
+                    if P == G.left and P.left == node:  # LL Case
+                        G.color, P.color = P.color, G.color
+                        self._right_rotate(G)
+                    elif P == G.left and P.right == node:  # LR Case
+                        self._left_rotate(P)
+                        G.color, node.color = node.color, G.color
+                        self._right_rotate(G)
+                    elif P == G.right and P.right == node:  # RR Case
+                        G.color, P.color = P.color, G.color
+                        self._left_rotate(G)
+                    elif P == G.right and P.left == node:  # RL Case
+                        self._right_rotate(P)
+                        G.color, node.color = node.color, G.color
+                        self._left_rotate(G)
 
     # 로테이션 함수 ( parent 사용 )
-    def R_R(self, node):
-        child = node.left
-        parent = node.parent
+    def _left_rotate(self, node):
+        c = node.right
+        p = node.parent
 
-        if child.right is not None:
-            child.right.parent = node
+        if c.left is not None:
+            c.left.parent = node
 
-        node.left = child.right
-        node.parent = child
-        child.right = node
-        child.parent = parent
+        node.right = c.left
+        node.parent = c
+        c.left = node
+        c.parent = p
+        if p is None:
+            self.root = c
+        elif p is not None:
+            if p.left == node:
+                p.left = c
+            elif p.right == node:
+                p.right = c
 
-        if parent is None:
-            self.root = child
-        elif parent is not None:
-            if parent.left == node:
-                parent.left = child
-            elif parent.right == node:
-                parent.right = child
+    def _right_rotate(self, node):
+        c = node.left
+        p = node.parent
 
-    def R_L(self, node):
-        child = node.right
-        parent = node.parent
+        if c.right is not None:
+            c.right.parent = node
 
-        if child.left is not None:
-            child.left.parent = node
-
-        node.right = child.left
-        node.parent = child
-        child.left = node
-        child.parent = parent
-
-        if parent is None:
-            self.root = child
-        elif parent is not None:
-            if parent.left == node:
-                parent.left = child
-            elif parent.right == node:
-                parent.right = child
+        node.left = c.right
+        node.parent = c
+        c.right = node
+        c.parent = p
+        if p is None:
+            self.root = c
+        elif p is not None:
+            if p.left == node:
+                p.left = c
+            elif p.right == node:
+                p.right = c
