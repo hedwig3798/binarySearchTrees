@@ -35,7 +35,6 @@ class treaps:
         else:
             if data.key >= currentNode.key:
                 if currentNode.right:
-
                     self.insert(data, currentNode.right)
                     return
                 else:
