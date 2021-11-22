@@ -1,4 +1,5 @@
 import sys
+import random
 sys.setrecursionlimit(10**7)
 
 
@@ -16,6 +17,9 @@ class Node:
         # RB 트리에 사용
         self.parent = None
         self.color = "R"
+
+        # T 에 사용
+        self.property = random.randint(0, 100_000_000)
 
     def search(self, val, root):
 

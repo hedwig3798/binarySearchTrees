@@ -8,7 +8,7 @@ import treaps
 
 # 기본 설정값 ( 필요시 수정 가능 )
 MAX_NUMBER = 100_000_000    # 최댓값
-EPOCH = 1   # 반복 횟수
+EPOCH = 100   # 반복 횟수
 DATA_SIZE = [1_000, 5_000, 10_000, 50_000, 100_000]     # 데이터 크기
 DATA = []   # 데이터가 들어갈 리스트
 
@@ -41,7 +41,7 @@ print("start inserting data")
 for e in range(EPOCH):
     DATA = [random.sample(range(0, MAX_NUMBER), i) for i in DATA_SIZE]
 
-    # BS에 삽입
+    # BS 에 삽입
     print("BS")
     index = 0
     for i in DATA:
@@ -55,7 +55,7 @@ for e in range(EPOCH):
         if i != DATA[-1]:
             BS.root = None
 
-    # AVL에 삽입
+    # AVL 에 삽입
     print("AVL")
     index = 0
     for i in DATA:
@@ -65,10 +65,11 @@ for e in range(EPOCH):
             AVL.insert(temp)
         USED_TIME_INSERT["AVL"][index] += time.time() - start
         index += 1
+
         if i != DATA[-1]:
             AVL.root = None
             
-    # AVL에 삽입
+    # RB 에 삽입
     print("RB")
     index = 0
     for i in DATA:
@@ -78,25 +79,50 @@ for e in range(EPOCH):
         USED_TIME_INSERT["RB"][index] += time.time() - start
         index += 1
         if i != DATA[-1]:
-            AVL.root = None
+            RB.root = None
 
+    # AVL 에 삽입
+    print("T")
+    index = 0
+    for i in DATA:
+        start = time.time()
+        for data in i:
+            temp = node.Node(data)
+            T.insert(temp)
+        USED_TIME_INSERT["T"][index] += time.time() - start
+        index += 1
 
+        if i != DATA[-1]:
+            T.root = None
 
     print(f"====== INSERT {e+1}% COMPLETE ======", flush=True)
 
+print(BS.root)
+print(AVL.root)
+print(RB.root)
+
 # 각 트리에서 특정한 값 탐색 ( 마지막 데이터 리스트에서 한 값을 추출해서 탐색 )
-for e in range(EPOCH):
+for e in range(EPOCH * 10000):
 
     SEARCH = random.choice(DATA[-1])
 
-    # BS에 삽입
+    # BS 에서 탐색
     start = time.time()
     BS.root.search(SEARCH, BS.root)
     USED_TIME_SEARCH["BS"] += time.time() - start
 
-    print(f"====== SEARCH {e+1}% COMPLETE ======")
+    # AVL 에서 탐색
+    start = time.time()
+    AVL.root.search(SEARCH, AVL.root)
+    USED_TIME_SEARCH["AVL"] += time.time() - start
+
+    # RB 에서 탐색
+    start = time.time()
+    RB.root.search(SEARCH, RB.root)
+    USED_TIME_SEARCH["RB"] += time.time() - start
 
 print("삽입에 걸린 시간")
+print()
 
 index = 0
 for key in USED_TIME_INSERT:
@@ -105,7 +131,8 @@ for key in USED_TIME_INSERT:
         print(f"{DATA_SIZE[index]}개 : {i} 초")
         index += 1
     index = 0
-
+print()
 print("탐색에 걸린 시간")
+print()
 for key in USED_TIME_SEARCH:
     print(f"{key} : {USED_TIME_SEARCH[key]}")
