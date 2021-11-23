@@ -24,6 +24,9 @@ class treaps:
                 elif currentNode == currentParent.left:
                     currentParent.left = data
 
+            else:
+                self.root = data
+
             if data.key >= currentNode.key:
                 data.left = currentNode
                 return
@@ -47,7 +50,7 @@ class treaps:
                     return
                 else:
                     currentNode.left = data
-                    data.left = currentNode
+                    data.parent = currentNode
                     return
 
         return

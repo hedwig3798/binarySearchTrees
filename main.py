@@ -38,7 +38,7 @@ print("program start")
 
 print("start inserting data")
 # 각 트리에 삽입
-for e in range(EPOCH):
+for e in range(1):
     DATA = [random.sample(range(0, MAX_NUMBER), i) for i in DATA_SIZE]
 
     # BS 에 삽입
@@ -97,10 +97,6 @@ for e in range(EPOCH):
 
     print(f"====== INSERT {e+1}% COMPLETE ======", flush=True)
 
-print(BS.root)
-print(AVL.root)
-print(RB.root)
-
 # 각 트리에서 특정한 값 탐색 ( 마지막 데이터 리스트에서 한 값을 추출해서 탐색 )
 for e in range(EPOCH * 10000):
 
@@ -120,6 +116,11 @@ for e in range(EPOCH * 10000):
     start = time.time()
     RB.root.search(SEARCH, RB.root)
     USED_TIME_SEARCH["RB"] += time.time() - start
+
+    # T 에서 탐색
+    start = time.time()
+    T.root.search(SEARCH, T.root)
+    USED_TIME_SEARCH["T"] += time.time() - start
 
 print("삽입에 걸린 시간")
 print()
