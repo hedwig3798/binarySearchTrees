@@ -5,6 +5,7 @@ import binarySearchTree
 import AVLtree
 import RBtree
 import treaps
+import splay
 
 # 기본 설정값 ( 필요시 수정 가능 )
 MAX_NUMBER = 100_000_000    # 최댓값
@@ -17,13 +18,15 @@ BS = binarySearchTree.binarySearchTree()
 AVL = AVLtree.AVL()
 RB = RBtree.RedBlackTree()
 T = treaps.treaps()
+S = splay.splay()
 
 # 삽입에 소요된 시간
 USED_TIME_INSERT = {
     "BS": [0, 0, 0, 0, 0],
     "AVL": [0, 0, 0, 0, 0],
     "RB": [0, 0, 0, 0, 0],
-    "T": [0, 0, 0, 0, 0]
+    "T": [0, 0, 0, 0, 0],
+    "S": [0, 0, 0, 0, 0]
 }
 
 # 탐색에 소요된 시간
@@ -31,7 +34,8 @@ USED_TIME_SEARCH = {
     "BS": 0,
     "AVL": 0,
     "RB": 0,
-    "T": 0
+    "T": 0,
+    "S": 0
 }
 
 print("program start")
@@ -81,7 +85,7 @@ for e in range(1):
         if i != DATA[-1]:
             RB.root = None
 
-    # AVL 에 삽입
+    # T 에 삽입
     print("T")
     index = 0
     for i in DATA:
@@ -94,6 +98,19 @@ for e in range(1):
 
         if i != DATA[-1]:
             T.root = None
+    # S 에 삽입
+    print("S")
+    index = 0
+    for i in DATA:
+        start = time.time()
+        for data in i:
+            temp = node.Node(data)
+            S.insert(temp)
+        USED_TIME_INSERT["S"][index] += time.time() - start
+        index += 1
+
+        if i != DATA[-1]:
+            S.root = None
 
     print(f"====== INSERT {e+1}% COMPLETE ======", flush=True)
 
@@ -104,23 +121,33 @@ for e in range(EPOCH * 10000):
 
     # BS 에서 탐색
     start = time.time()
-    BS.root.search(SEARCH, BS.root)
+    if not BS.root.search(SEARCH, BS.root):
+        break
     USED_TIME_SEARCH["BS"] += time.time() - start
 
     # AVL 에서 탐색
     start = time.time()
-    AVL.root.search(SEARCH, AVL.root)
+    if not AVL.root.search(SEARCH, AVL.root):
+        break
     USED_TIME_SEARCH["AVL"] += time.time() - start
 
     # RB 에서 탐색
     start = time.time()
-    RB.root.search(SEARCH, RB.root)
+    if not RB.root.search(SEARCH, RB.root):
+        break
     USED_TIME_SEARCH["RB"] += time.time() - start
 
     # T 에서 탐색
     start = time.time()
-    T.root.search(SEARCH, T.root)
+    if not T.root.search(SEARCH, T.root):
+        break
     USED_TIME_SEARCH["T"] += time.time() - start
+
+    # S 에서 탐색
+    start = time.time()
+    if not S.root.search(SEARCH, S.root):
+        break
+    USED_TIME_SEARCH["S"] += time.time() - start
 
 print("삽입에 걸린 시간")
 print()

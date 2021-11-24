@@ -24,20 +24,18 @@ class Node:
     def search(self, val, root):
 
         if root is None:
-            return
+            return False
 
         while root.key != val:
             if root.key < val:
                 if root.right is None:
-                    print("cannot find")
-                    return
+                    return False
                 root = root.right
             elif root.key > val:
                 if root.left is None:
-                    print("cannot find")
-                    return
+                    return False
                 root = root.left
-        return
+        return True
 
 
 if __name__ == "__main__":

@@ -2,55 +2,56 @@ class treaps:
     def __init__(self, data=None):
         self.root = data
 
-    def insert(self, data, currentNode=None):
+        # 삽입
 
-        if self.root is None:
-            self.root = data
-            self.root.parent = None
-            return
+    def insert(self, data):
+        self.root = self.insert_process(data, self.root)
+
+    def insert_process(self, data, currentNode=None):
 
         if currentNode is None:
-            currentNode = self.root
+            return data
 
-        if data.property >= currentNode.property:
-            currentParent = currentNode.parent
-            data.parent = currentParent
-            currentNode.parent = data
-
-            if currentParent is not None:
-                if currentNode == currentParent.right:
-                    currentParent.right = data
-
-                elif currentNode == currentParent.left:
-                    currentParent.left = data
-
+        if data.key <= currentNode.key:
+            if currentNode.left:
+                currentNode.left = self.insert_process(data, currentNode.left)
             else:
-                self.root = data
+                currentNode.left = data
 
-            if data.key >= currentNode.key:
-                data.left = currentNode
-                return
-
+        elif data.key > currentNode.key:
+            if currentNode.right:
+                currentNode.right = self.insert_process(data, currentNode.right)
             else:
-                data.right = currentNode
-                return
+                currentNode.right = data
+
+        return self.balance(currentNode)
+
+    def balance(self, node):
+        if node.left:
+            if node.property < node.left.property:
+                node = self.R_R(node)
+
+        if node.right:
+            if node.property < node.right.property:
+                node = self.R_L(node)
 
         else:
-            if data.key >= currentNode.key:
-                if currentNode.right:
-                    self.insert(data, currentNode.right)
-                    return
-                else:
-                    currentNode.right = data
-                    data.parent = currentNode
-                    return
-            else:
-                if currentNode.left:
-                    self.insert(data, currentNode.left)
-                    return
-                else:
-                    currentNode.left = data
-                    data.parent = currentNode
-                    return
+            return node
 
-        return
+        return node
+
+    def R_R(self, node):
+        temp = node.left
+
+        node.left = temp.right
+        temp.right = node
+
+        return temp
+
+    def R_L(self, node):
+        temp = node.right
+
+        node.right = temp.left
+        temp.left = node
+
+        return temp
