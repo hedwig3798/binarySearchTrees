@@ -1,15 +1,77 @@
-class splay:
-    def __init__(self, data=None):
-        self.root = data
 
-    # 삽입
-    def insert(self, data):
+class SplayTree:
+    def __init__(self):
+        self.root = None
 
-        node = data
+    # rotate left at node x
+    def __left_rotate(self, x):
+        y = x.right
+        x.right = y.left
+        if y.left != None:
+            y.left.parent = x
+
+        y.parent = x.parent
+        if x.parent == None:
+            self.root = y
+        elif x == x.parent.left:
+            x.parent.left = y
+        else:
+            x.parent.right = y
+        y.left = x
+        x.parent = y
+
+    # rotate right at node x
+    def __right_rotate(self, x):
+        y = x.left
+        x.left = y.right
+        if y.right != None:
+            y.right.parent = x
+
+        y.parent = x.parent;
+        if x.parent == None:
+            self.root = y
+        elif x == x.parent.right:
+            x.parent.right = y
+        else:
+            x.parent.left = y
+
+        y.right = x
+        x.parent = y
+
+    # Splaying operation. It moves x to the root of the tree
+    def __splay(self, x):
+        while x.parent != None:
+            if x.parent.parent == None:
+                if x == x.parent.left:
+                    # zig rotation
+                    self.__right_rotate(x.parent)
+                else:
+                    # zag rotation
+                    self.__left_rotate(x.parent)
+            elif x == x.parent.left and x.parent == x.parent.parent.left:
+                # zig-zig rotation
+                self.__right_rotate(x.parent.parent)
+                self.__right_rotate(x.parent)
+            elif x == x.parent.right and x.parent == x.parent.parent.right:
+                # zag-zag rotation
+                self.__left_rotate(x.parent.parent)
+                self.__left_rotate(x.parent)
+            elif x == x.parent.right and x.parent == x.parent.parent.left:
+                # zig-zag rotation
+                self.__left_rotate(x.parent)
+                self.__right_rotate(x.parent)
+            else:
+                # zag-zig rotation
+                self.__right_rotate(x.parent)
+                self.__left_rotate(x.parent)
+
+    # insert the key to the tree in its appropriate position
+    def insert(self, key):
+        node = key
         y = None
         x = self.root
 
-        while x is not None:
+        while x != None:
             y = x
             if node.key < x.key:
                 x = x.left
@@ -18,68 +80,12 @@ class splay:
 
         # y is parent of x
         node.parent = y
-        if y is None:
+        if y == None:
             self.root = node
         elif node.key < y.key:
             y.left = node
         else:
             y.right = node
         # splay the node
-        self.splay(node)
+        self.__splay(node)
 
-    def splay(self, node):
-        while node.parent is not None:
-            if node.parent.parent is None:
-                if node is node.parent.left:
-                    self.R_R(node.parent)
-                else:
-                    self.R_L(node.parent)
-            elif node is node.parent.left and node.parent is node.parent.parent.left:
-                self.R_R(node.parent.parent)
-                self.R_R(node.parent)
-            elif node is node.parent.right and node.parent is node.parent.parent.right:
-                self.R_L(node.parent.parent)
-                self.R_L(node.parent)
-            elif node is node.parent.right and node.parent is node.parent.parent.left:
-                self.R_L(node.parent.parent)
-                self.R_R(node.parent)
-            else:
-                self.R_R(node.parent.parent)
-                self.R_L(node.parent)
-
-    # 로테이션 함수 ( parent 사용 하지 않음 )
-    def R_R(self, node):
-        temp = node.left
-        node.left = temp.right
-
-        if temp.right is not None:
-            temp.right.parent = node
-
-        temp.parent = node.parent
-
-        if node.parent is None:
-            self.root = temp
-        elif node is node.parent.right:
-            node.parent.right = temp
-        else:
-            node.parent.left = temp
-
-        temp.right = node
-        node.parent = temp
-
-    def R_L(self, node):
-        temp = node.right
-
-        if temp.left:
-            temp.left.parent = node
-
-        temp.parent = node.parent
-
-        if node.parent is None:
-            self.root = temp
-        elif node is node.parent.left:
-            node.parent.left = temp
-        else:
-            node.parent.right = temp
-        node.right = temp.left
-        temp.left = node

@@ -18,7 +18,7 @@ BS = binarySearchTree.binarySearchTree()
 AVL = AVLtree.AVL()
 RB = RBtree.RedBlackTree()
 T = treaps.treaps()
-S = splay.splay()
+S = splay.SplayTree()
 
 # 삽입에 소요된 시간
 USED_TIME_INSERT = {
@@ -146,6 +146,7 @@ for e in range(EPOCH * 10000):
     # S 에서 탐색
     start = time.time()
     if not S.root.search(SEARCH, S.root):
+        print("S search error")
         break
     USED_TIME_SEARCH["S"] += time.time() - start
 
