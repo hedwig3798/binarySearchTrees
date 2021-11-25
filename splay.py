@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10**7)
+
 
 class SplayTree:
     def __init__(self):

@@ -1,3 +1,7 @@
+import sys
+sys.setrecursionlimit(10**9)
+
+
 class binarySearchTree:
 
     def __init__(self, data=None):

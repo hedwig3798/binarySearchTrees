@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10**7)
+
 class AVL:
     def __init__(self, data=None):
         self.root = data

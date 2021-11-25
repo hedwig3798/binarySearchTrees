@@ -1,4 +1,6 @@
+import sys
 import node as n
+sys.setrecursionlimit(10**7)
 
 
 class RedBlackTree:
