@@ -1,10 +1,10 @@
 import sys
 import node as n
-sys.setrecursionlimit(10**7)
 
 
 class RedBlackTree:
     def __init__(self, data=None):
+        sys.setrecursionlimit(10 ** 7)
         self.root = data
         self. insertedNode = None
 

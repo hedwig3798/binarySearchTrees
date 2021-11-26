@@ -1,8 +1,9 @@
 import sys
-sys.setrecursionlimit(10**7)
+
 
 class AVL:
     def __init__(self, data=None):
+        sys.setrecursionlimit(10 ** 7)
         self.root = data
 
     # 높이 함수

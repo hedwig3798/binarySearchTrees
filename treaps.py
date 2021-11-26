@@ -1,5 +1,9 @@
+import sys
+
+
 class treaps:
     def __init__(self, data=None):
+        sys.setrecursionlimit(10 ** 7)
         self.root = data
 
         # 삽입

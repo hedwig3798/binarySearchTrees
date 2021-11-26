@@ -1,11 +1,11 @@
 import sys
 import random
-sys.setrecursionlimit(10**7)
+
 
 
 class Node:
     def __init__(self, data=None):
-
+        sys.setrecursionlimit(10 ** 7)
         # 모든 트리에 사용
         self.key = data
         self.right = None
@@ -16,7 +16,7 @@ class Node:
 
         # RB 트리에 사용
         self.parent = None
-        self.color = "R"
+        self.color = "Red"
 
         # T 에 사용
         self.property = random.randint(0, 100_000_000)

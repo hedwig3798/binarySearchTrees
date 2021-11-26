@@ -4,6 +4,7 @@ sys.setrecursionlimit(10**7)
 
 class SplayTree:
     def __init__(self):
+        sys.setrecursionlimit(10 ** 7)
         self.root = None
 
     # rotate left at node x
@@ -91,4 +92,21 @@ class SplayTree:
             y.right = node
         # splay the node
         self.__splay(node)
+
+    def searchSplay(self, val, root):
+
+        if root is None:
+            return False
+
+        while root.key != val:
+            if root.key < val:
+                if root.right is None:
+                    return False
+                root = root.right
+            elif root.key > val:
+                if root.left is None:
+                    return False
+                root = root.left
+        self.__splay(root)
+        return True
 

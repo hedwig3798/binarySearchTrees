@@ -6,7 +6,9 @@ import AVLtree
 import RBtree
 import treaps
 import splay
+import sys
 
+sys.setrecursionlimit(10**7)
 # 기본 설정값 ( 필요시 수정 가능 )
 MAX_NUMBER = 100_000_000    # 최댓값
 EPOCH = 100  # 반복 횟수
@@ -162,7 +164,7 @@ for e in range(EPOCH * 10000):
 
     # S 에서 탐색
     start = time.time()
-    if not S.root.search(SEARCH, S.root):
+    if not S.searchSplay(SEARCH, S.root):
         print("S search error")
         break
     USED_TIME_SEARCH["S"] += time.time() - start
@@ -276,7 +278,7 @@ for e in range(EPOCH * 10000):
 
     # S 에서 탐색
     start = time.time()
-    if not S.root.search(SEARCH, S.root):
+    if not S.searchSplay(SEARCH, S.root):
         print("S search error")
         break
     USED_TIME_SEARCH_WORST["S"] += time.time() - start

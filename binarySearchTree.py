@@ -5,6 +5,7 @@ sys.setrecursionlimit(10**9)
 class binarySearchTree:
 
     def __init__(self, data=None):
+        sys.setrecursionlimit(10 ** 7)
         self.root = data
 
     # 삽입 연산 ( 재귀호출 사용 )
