@@ -6,3 +6,4 @@
 2. AVL 트리
 3. RB 트리
 4. 트랩
+5. splay tree
